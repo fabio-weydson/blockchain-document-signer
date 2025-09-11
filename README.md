@@ -7,15 +7,17 @@ Estou desenvolvendo este projeto como um exercício de aprendizado para entender
 **Aviso:** Este projeto está sendo desenvolvido apenas para fins de aprendizado sobre integração de blockchain com aplicações web usando Wagmi e IPFS. Não é destinado para uso em produção.
 
 🚀 **Tecnologias**
-• React (Vite + TailwindCSS)
-• Wagmi + MetaMask
-• IPFS (armazenamento P2P de arquivos)
-• Rede de teste Sepolia
+
+- React (Vite + TailwindCSS)
+- Wagmi + MetaMask
+- IPFS (P2P file storage)
+- Sepolia test network
 
 📌 **Funcionalidades**
-• Upload de PDF pelo usuário
-• Geração de hash SHA-256 do documento
-• Upload do arquivo para IPFS
-• Assinatura via carteira Ethereum (MetaMask)
-• Registro na blockchain: hash + signatário + timestamp
-• Histórico de documentos assinados
+
+- Upload de PDF pelo usuário
+- Geração de hash SHA-256 do documento
+- Upload do arquivo para IPFS
+- Assinatura via carteira Ethereum (MetaMask)
+- Registro na blockchain: hash + signatário + timestamp
+- Histórico de documentos assinados
