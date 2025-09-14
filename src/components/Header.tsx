@@ -51,6 +51,27 @@ const Header = () => {
           </select>
         )}
       </div>
+      <div id="menu">
+        <nav className="mt-4">
+          <ul className="flex space-x-4">
+            <li className="font-bold *:underline">
+              <a href="/" className="hover:underline">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="/documents/sign" className="hover:underline">
+                Sign Document
+              </a>
+            </li>
+            <li>
+              <a href="/documents/verify" className="hover:underline">
+                Verify Document
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </header>
   );
 };
