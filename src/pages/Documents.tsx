@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DocIcon, IpfsIcon } from "../assets/Icons";
-import UploadModal from "../components/documents/UploadModal";
+import { UploadModal } from "../components";
 import { dummyDocs } from "../consts";
 
 export default function Documents() {

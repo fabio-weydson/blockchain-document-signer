@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router";
-import { Home, Sign } from "./components";
+import { Home } from "./pages";
+import { Sign } from "./components";
 
 function App() {
   return (
