@@ -2,11 +2,12 @@ import React from "react";
 
 type IconProps = {
   color: string;
+  size?: number;
 };
 
-export const IpfsIcon: React.FC<IconProps> = ({ color }) => (
+export const IpfsIcon: React.FC<IconProps> = ({ color, size = 6 }) => (
   <svg
-    className="h-4 w-4 inline-block mr-1"
+    className={`h-${size} w-${size} inline-block`}
     fill="none"
     stroke={color}
     viewBox="0 0 24 24"
@@ -26,10 +27,10 @@ export const IpfsIcon: React.FC<IconProps> = ({ color }) => (
   </svg>
 );
 
-export const DocIcon: React.FC<IconProps> = ({ color }) => (
+export const DocIcon: React.FC<IconProps> = ({ color, size = 6 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6 inline-block mr-2"
+    className={`h-${size} w-${size} inline-block`}
     fill="none"
     viewBox="0 0 24 24"
     stroke={color}

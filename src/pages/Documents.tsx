@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DocIcon, IpfsIcon } from "../assets/Icons";
+import { IpfsIcon } from "../assets/Icons";
 import { UploadModal } from "../components";
 import { dummyDocs } from "../consts";
 
@@ -27,7 +27,6 @@ export default function Documents() {
             className="card hover:bg-gray-800 p-4 cursor-pointer"
           >
             <>
-              <DocIcon color="#6ee7b7" />
               {doc.name}
               {doc.signedDate && (
                 <>
@@ -35,8 +34,8 @@ export default function Documents() {
                     Signed on: {doc.signedDate}
                   </div>
                   <div className="text-sm text-gray-500 mt-2">
-                    <IpfsIcon color="#6ee7b7" />
-                    IPFS: 0x1234...abcd
+                    <IpfsIcon size={4} color="#6ee7b7" />
+                    &nbsp; IPFS: 0x1234...abcd
                   </div>
                 </>
               )}
