@@ -19,10 +19,15 @@ const Header = () => {
   return (
     <header className="bg-gray-800 text-white p-4">
       <h1 className="text-2xl font-bold">Blockchain Document Signing</h1>
-      <p className="mt-2">Securely sign your documents on the blockchain</p>
-      <div id="wallet-connection" className="mt-4 absolute top-4 right-4">
+      <p className="mt-2 sm:mt-0 text-gray-400">
+        Securely sign your documents on the blockchain
+      </p>
+      <div
+        id="wallet-connection"
+        className="mt-4 lg:absolute top-4 right-4 bg-gray-700 p-2 rounded"
+      >
         {account?.isConnected && (
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <p title={account.addresses?.[0]}>
               Connected as: {account.addresses?.[0]?.substring(0, 6)}...
               {account.addresses?.[0]?.substring(38)}
