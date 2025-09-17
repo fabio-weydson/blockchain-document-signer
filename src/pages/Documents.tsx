@@ -1,49 +1,58 @@
+import { useState } from "react";
+import { DocIcon, IpfsIcon } from "../assets/Icons";
+import UploadModal from "../components/documents/UploadModal";
+import { dummyDocs } from "../consts";
+
 export default function Documents() {
-  const dummyDocs = [
-    { id: 1, name: "Document 1", signed: true, signedDate: "2024-06-01" },
-    { id: 2, name: "Document 2", signed: false, signedDate: null },
-    { id: 3, name: "Document 3", signed: false, signedDate: null },
-  ];
+  const [open, setOpen] = useState(false);
+
+  const activeDocs = dummyDocs.filter((doc) => doc.status !== "archived");
+  const archivedDocs = dummyDocs.filter((doc) => doc.status === "archived");
+
   return (
     <>
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold mb-4">My Documents</h1>
-        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <h1 className="text-2xl font-bold">My Documents</h1>
+        <button
+          onClick={() => setOpen(true)}
+          className="btn-primary px-4 py-2 rounded cursor-pointer"
+        >
           + New Document
         </button>
       </div>
-      <h1>My Documents</h1>
-      <ul id="document-cards-list" className="mt-4 grid grid-cols-4 gap-4">
-        {dummyDocs.map((doc) => (
+      <ul id="document-cards-list" className="mt-4 grid lg:grid-cols-4 gap-4">
+        {activeDocs.map((doc) => (
           <li
             key={doc.id}
-            className="border p-4 mb-2 rounded cursor-pointer flex flex-col items-center justify-center bg-gray-50 text-2xl font-bold text-blue-600 hover:bg-gray-100"
+            className="card hover:bg-gray-800 p-4 cursor-pointer"
           >
             <>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 inline-block mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0013.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                />
-              </svg>
+              <DocIcon color="#6ee7b7" />
               {doc.name}
               {doc.signedDate && (
-                <div className="text-sm text-gray-500 mt-2">
-                  Signed on: {doc.signedDate}
-                </div>
+                <>
+                  <div className="text-sm text-gray-400 mt-2">
+                    Signed on: {doc.signedDate}
+                  </div>
+                  <div className="text-sm text-gray-500 mt-2">
+                    <IpfsIcon color="#6ee7b7" />
+                    IPFS: 0x1234...abcd
+                  </div>
+                </>
+              )}
+              {!doc.signed && (
+                <div className="text-sm text-gray-500 mt-2">Not signed yet</div>
               )}
             </>
           </li>
         ))}
+        <li id="bin" className="card hover:bg-gray-800 p-4 cursor-pointer">
+          <div className="text-center text-gray-500">
+            🗑️ Archive ({archivedDocs.length})
+          </div>
+        </li>
       </ul>
+      <UploadModal open={open} setOpen={setOpen} />
     </>
   );
 }
