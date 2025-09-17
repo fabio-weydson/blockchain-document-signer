@@ -1,0 +1,76 @@
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base colors */
+    --color-bg: #0b0e12;
+    --color-surface: #171f25ff;
+    --color-elevated: #131820;
+
+    /* Accents */
+    --color-accent: #6ee7b7; /* mint */
+    --color-accent-alt: #7c5cff; /* violet */
+    --color-accent-secondary: #4da3ff;
+
+    /* Text */
+    --color-text: #e6eef3;
+    --color-text-secondary: #a9b3bd;
+    --color-text-muted: #6b7780;
+
+    /* States */
+    --color-error: #ff6b6b;
+    --color-success: #2ecc71;
+  }
+
+  body {
+    @apply bg-[color:var(--color-bg)] text-[color:var(--color-text)] font-sans;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-[color:var(--color-surface)] rounded-2xl shadow-lg p-6;
+  }
+
+  .btn {
+    @apply px-4 py-2 font-medium rounded-xl transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-[color:var(--color-accent)] text-black hover:opacity-90;
+  }
+
+  .btn-alt {
+    @apply bg-[color:var(--color-accent-alt)] text-white hover:opacity-90;
+  }
+
+  .btn-secondary {
+    @apply bg-[color:var(--color-accent-secondary)] text-white hover:opacity-90;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 rounded-lg bg-[color:var(--color-elevated)] 
+           text-[color:var(--color-text)] placeholder-[color:var(--color-text-secondary)] 
+           border border-transparent focus:outline-none focus:ring-2 focus:ring-[color:var(--color-accent)];
+  }
+
+  .status-pill {
+    @apply px-3 py-1 text-xs rounded-full font-medium;
+  }
+
+  .status-draft {
+    @apply bg-[color:var(--color-text-muted)] text-white;
+  }
+
+  .status-pending {
+    @apply bg-[color:var(--color-accent-secondary)] text-white;
+  }
+
+  .status-signed {
+    @apply bg-[color:var(--color-success)] text-white;
+  }
+
+  .status-rejected {
+    @apply bg-[color:var(--color-error)] text-white;
+  }
+}
