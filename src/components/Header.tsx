@@ -24,7 +24,7 @@ const Header = () => {
       </p>
       <div
         id="wallet-connection"
-        className="mt-4 lg:absolute top-4 right-4 bg-gray-700 p-2 rounded"
+        className={`mt-4 lg:absolute top-4 right-4  p-2 rounded ${account?.isConnected ? "bg-gray-700" : ""} `}
       >
         {account?.isConnected && (
           <div className="flex items-center justify-center">
@@ -45,7 +45,7 @@ const Header = () => {
         {!account?.isConnected && (
           <select
             onChange={handleAccountConnection}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="btn-alt text-white px-4 py-2 rounded"
           >
             <option value="">Connect Wallet</option>
             {connectors?.map((connector: any, index: number) => (
