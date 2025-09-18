@@ -34,7 +34,7 @@ export default function Documents() {
                     Signed on: {doc.signedDate}
                   </div>
                   <div className="text-sm text-gray-500 mt-2">
-                    <IpfsIcon size={4} color="#6ee7b7" />
+                    <IpfsIcon size={6} color="#6ee7b7" />
                     &nbsp; IPFS: 0x1234...abcd
                   </div>
                 </>
