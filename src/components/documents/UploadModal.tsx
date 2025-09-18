@@ -1,9 +1,12 @@
+import React from "react";
+
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { useFileUpload } from "../../hooks/useFileUpload";
 import { DocIcon } from "../../assets/Icons";
 
 export default function UploadModal({
@@ -13,6 +16,22 @@ export default function UploadModal({
   open: boolean;
   setOpen: (open: boolean) => void;
 }) {
+  const { progress, error, uploadFile } = useFileUpload();
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+
+  const handleFileUpload = () => {
+    const file = fileInputRef.current?.files?.[0];
+    console.log("Selected file:", file);
+    if (!file) return;
+    uploadFile(file)
+      .then(() => {
+        //setOpen(false);
+      })
+      .catch((err) => {
+        alert("File upload failed: " + err?.message);
+      });
+  };
+
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
@@ -27,11 +46,11 @@ export default function UploadModal({
             className="relative transform overflow-hidden rounded-lg bg-gray-800 text-left shadow-xl outline -outline-offset-1 outline-white/10 transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95"
           >
             <div className="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-              <div className="sm:flex sm:items-start">
+              <div className="flex flex-col sm:flex-row sm:items-center">
                 <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-gray-200/10 sm:mx-0 sm:size-10">
                   <DocIcon color="#6ee7b7" />
                 </div>
-                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                <div className="mt-3 text-center flex-2 sm:mt-0 sm:ml-4 sm:text-left">
                   <DialogTitle
                     as="h3"
                     className="text-base font-semibold text-white"
@@ -46,16 +65,31 @@ export default function UploadModal({
                   <div className="mt-2">
                     <input
                       type="file"
+                      ref={fileInputRef}
                       className="text-sm text-gray-400 file:bg-gray-200 file:text-gray-700 file:border-0 file:rounded file:px-3 file:py-2 file:text-sm file:font-semibold file:hover:bg-gray-700"
                     />
                   </div>
+                  {progress > 0 && (
+                    <div className="mt-2">
+                      <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div
+                          className={`bg-blue-600 h-2.5 rounded-full ${progress === 0 ? "w-0" : "w-full"}`}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
+                  {error && (
+                    <div className="mt-2 text-sm text-red-400">
+                      Error: {error?.message}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
             <div className="bg-gray-700/25 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={handleFileUpload}
                 className="inline-flex w-full justify-center rounded-md btn-primary px-3 py-2 text-sm font-semibold hover:bg-white sm:ml-3 sm:w-auto"
               >
                 Upload

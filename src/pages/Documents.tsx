@@ -12,7 +12,12 @@ export default function Documents() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">My Documents</h1>
+        <h1 className="text-2xl font-bold">
+          My Documents
+          <span className="text-md text-gray-400 ml-2">
+            ({activeDocs.length})
+          </span>
+        </h1>
         <button
           onClick={() => setOpen(true)}
           className="btn-primary px-4 py-2 rounded cursor-pointer"
@@ -45,7 +50,10 @@ export default function Documents() {
             </>
           </li>
         ))}
-        <li id="bin" className="card hover:bg-gray-800 p-4 cursor-pointer">
+        <li
+          id="bin"
+          className="card hover:bg-gray-800 p-4 cursor-pointer lg:hidden"
+        >
           <div className="text-center text-gray-500">
             🗑️ Archive ({archivedDocs.length})
           </div>
