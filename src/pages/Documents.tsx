@@ -1,23 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IpfsIcon } from "../assets/Icons";
 import { UploadModal } from "../components";
-import { dummyDocs } from "../consts";
+import { useFiles } from "../hooks";
+import { IPFSFileResponse } from "../types";
+
+const IpfsBaseFolder = import.meta.env.REACT_APP_IPFS_BASE_DIR || "docs";
 
 export default function Documents() {
   const [open, setOpen] = useState(false);
+  const [files, setFiles] = useState<IPFSFileResponse[]>([]);
+  const { getAllFiles } = useFiles();
 
-  const activeDocs = dummyDocs.filter((doc) => doc.status !== "archived");
-  const archivedDocs = dummyDocs.filter((doc) => doc.status === "archived");
+  useEffect(() => {
+    const fetchFiles = async () => {
+      const files = await getAllFiles(IpfsBaseFolder);
+      setFiles(files || []);
+    };
+    fetchFiles();
+  }, []);
+
+  const archivedDocs = [];
 
   return (
     <>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">
           My Documents
-          <span className="text-md text-gray-400 ml-2">
-            ({activeDocs.length})
-          </span>
+          <span className="text-md text-gray-400 ml-2">({files.length})</span>
         </h1>
+        &nbsp;
         <button
           onClick={() => setOpen(true)}
           className="btn-primary px-4 py-2 rounded cursor-pointer"
@@ -26,14 +37,15 @@ export default function Documents() {
         </button>
       </div>
       <ul id="document-cards-list" className="mt-4 grid lg:grid-cols-4 gap-4">
-        {activeDocs.map((doc) => (
-          <li
-            key={doc.id}
-            className="card hover:bg-gray-800 p-4 cursor-pointer"
-          >
-            <>
-              {doc.name}
-              {doc.signedDate && (
+        {files &&
+          files.map((doc) => (
+            <li
+              key={doc.Hash}
+              className="card hover:bg-gray-800 p-4 cursor-pointer"
+            >
+              <>
+                {doc.Name}
+                {/* {doc.signedDate && doc.signedDate && (
                 <>
                   <div className="text-sm text-gray-400 mt-2">
                     Signed on: {doc.signedDate}
@@ -48,10 +60,10 @@ export default function Documents() {
               )}
               {!doc.signed && (
                 <div className="text-sm text-gray-500 mt-2">Not signed yet</div>
-              )}
-            </>
-          </li>
-        ))}
+              )} */}
+              </>
+            </li>
+          ))}
         <li
           id="bin"
           className="card hover:bg-gray-800 p-4 cursor-pointer lg:hidden"
