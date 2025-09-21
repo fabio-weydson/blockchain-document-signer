@@ -1,10 +1,16 @@
 import { useState } from "react";
-import axios, { AxiosProgressEvent } from "axios";
+import { AxiosProgressEvent } from "axios";
 import { IPFSFileResponse } from "../types";
 
-export const useFileUpload = () => {
+import useAxios from "./useAxios";
+
+const IpfsApiUrl = import.meta.env.VITE_IPFS_API_URL;
+const IpfsBaseFolder = import.meta.env.VITE_IPFS_BASE_DIR || "docs";
+
+export default function useFileUpload() {
   const [progress, setProgress] = useState<number>(0);
   const [error, setError] = useState<{ message: string } | null>(null);
+  const { client } = useAxios();
 
   const uploadFile = async (
     formData: FormData
@@ -13,27 +19,30 @@ export const useFileUpload = () => {
     setError(null);
 
     const fileName = formData.get("fileName") as string;
-    const fileType = formData.get("fileType") as string | undefined;
-    const ipfsPath = `/docs/${fileName}.${fileType || ""}`;
+    const fileType = formData.get("fileType") as string;
+    const ipfsPath = `/${IpfsBaseFolder}/${fileName}`;
 
     try {
-      const result = await axios
-        .post(
-          `http://127.0.0.1:5001/api/v0/add?to-files=${encodeURIComponent(ipfsPath)}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            responseType: "json",
-            onUploadProgress: (event: AxiosProgressEvent) => {
-              if (!event.total) return;
-              const percent = Math.round((event.loaded * 100) / event.total);
-              setProgress(percent);
-            },
-          }
-        )
-        .then((res) => res.data);
+      const result = await client
+        .post(`${IpfsApiUrl}/add`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (event: AxiosProgressEvent) => {
+            if (!event.total) return;
+            const percent = Math.round((event.loaded * 100) / event.total);
+            setProgress(percent);
+          },
+        })
+        .then(
+          (res) =>
+            JSON.parse(res.data.trim().split("\n")[0]) as IPFSFileResponse
+        );
+
+      // Copying the uploaded file to MFS
+      if (result && result.Hash) {
+        await client.post(`files/cp?arg=/ipfs/${result.Hash}&arg=${ipfsPath}`);
+      }
 
       return {
         Hash: result.Hash,
@@ -51,4 +60,4 @@ export const useFileUpload = () => {
   };
 
   return { progress, error, uploadFile };
-};
+}
