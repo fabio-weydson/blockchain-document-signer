@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 
-import { useFileUpload } from "../../hooks/useFileUpload";
+import { useFileUpload } from "../../hooks";
 import { DocIcon } from "../../assets/Icons";
 
 import { IPFSFileResponse } from "../../types";
