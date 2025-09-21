@@ -155,6 +155,7 @@ export default function UploadModal({
                 </button>
               </div>
             )}
+            {/* TODO: Open document button */}
           </DialogPanel>
         </div>
       </div>
