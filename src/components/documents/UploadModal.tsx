@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Dialog,
@@ -6,8 +6,11 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+
 import { useFileUpload } from "../../hooks/useFileUpload";
 import { DocIcon } from "../../assets/Icons";
+
+import { IPFSFileResponse } from "../../types";
 
 export default function UploadModal({
   open,
@@ -18,14 +21,28 @@ export default function UploadModal({
 }) {
   const { progress, error, uploadFile } = useFileUpload();
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<IPFSFileResponse | null>(
+    null
+  );
 
   const handleFileUpload = () => {
     const file = fileInputRef.current?.files?.[0];
-    console.log("Selected file:", file);
+
+    if (!file) {
+      alert("Please select a file to upload.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("fileName", file?.name || "untitled");
+    formData.append("fileType", file?.type || "application/octet-stream");
+
     if (!file) return;
-    uploadFile(file)
-      .then(() => {
-        //setOpen(false);
+
+    uploadFile(formData)
+      .then((res) => {
+        if (res) setUploadedFile(res);
       })
       .catch((err) => {
         alert("File upload failed: " + err?.message);
@@ -47,7 +64,7 @@ export default function UploadModal({
           >
             <div className="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="flex flex-col sm:flex-row sm:items-center">
-                <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-gray-200/10 sm:mx-0 sm:size-10">
+                <div className="mx-auto flex size-12 p-2 shrink-0 items-center justify-center rounded-full bg-gray-200/10 sm:mx-0 sm:size-10">
                   <DocIcon color="#6ee7b7" />
                 </div>
                 <div className="mt-3 text-center flex-2 sm:mt-0 sm:ml-4 sm:text-left">
@@ -57,52 +74,87 @@ export default function UploadModal({
                   >
                     New Document
                   </DialogTitle>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-400">
-                      Select a document to upload and sign digitally.
-                    </p>
-                  </div>
-                  <div className="mt-2">
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      className="text-sm text-gray-400 file:bg-gray-200 file:text-gray-700 file:border-0 file:rounded file:px-3 file:py-2 file:text-sm file:font-semibold file:hover:bg-gray-700"
-                    />
-                  </div>
-                  {progress > 0 && (
+
+                  {!uploadedFile && (
+                    <>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-400">
+                          Select a document to upload and sign digitally.
+                        </p>
+                      </div>
+                      <div className="mt-2">
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          className="text-sm text-gray-400 file:bg-gray-200 file:text-gray-700 file:border-0 file:rounded file:px-3 file:py-2 file:text-sm file:font-semibold file:hover:bg-gray-700"
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {progress > 0 && !uploadedFile && (
                     <div className="mt-2">
                       <div className="w-full bg-gray-200 rounded-full h-2.5">
                         <div
-                          className={`bg-blue-600 h-2.5 rounded-full ${progress === 0 ? "w-0" : "w-full"}`}
+                          className={`bg-cyan-600 h-2.5 rounded-full ${progress === 0 ? "w-0" : "w-full"}`}
                         ></div>
                       </div>
                     </div>
                   )}
+
                   {error && (
                     <div className="mt-2 text-sm text-red-400">
                       Error: {error?.message}
                     </div>
                   )}
+
+                  {uploadedFile && (
+                    <div className="mt-2 text-md">
+                      File uploaded successfully!
+                      <br /> IPFS Hash:{" "}
+                      <span className="font-mono text-green-400">
+                        {uploadedFile.Hash.substring(0, 10)}...
+                        {uploadedFile.Hash.substring(
+                          uploadedFile.Hash.length - 10
+                        )}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-            <div className="bg-gray-700/25 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <button
-                type="button"
-                onClick={handleFileUpload}
-                className="inline-flex w-full justify-center rounded-md btn-primary px-3 py-2 text-sm font-semibold hover:bg-white sm:ml-3 sm:w-auto"
-              >
-                Upload
-              </button>
-              <button
-                type="button"
-                data-autofocus
-                onClick={() => setOpen(false)}
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20 sm:mt-0 sm:w-auto"
-              >
-                Cancel
-              </button>
-            </div>
+            {!uploadedFile && (
+              <div className="bg-gray-700/25 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <button
+                  type="button"
+                  onClick={handleFileUpload}
+                  className="inline-flex w-full justify-center rounded-md btn-primary px-3 py-2 text-sm font-semibold hover:bg-white sm:ml-3 sm:w-auto"
+                >
+                  Upload
+                </button>
+                <button
+                  type="button"
+                  data-autofocus
+                  onClick={() => setOpen(false)}
+                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20 sm:mt-0 sm:w-auto"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+
+            {uploadedFile && (
+              <div className="bg-gray-700/25 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <button
+                  type="button"
+                  data-autofocus
+                  onClick={() => setOpen(false)}
+                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20 sm:mt-0 sm:w-auto"
+                >
+                  Close
+                </button>
+              </div>
+            )}
           </DialogPanel>
         </div>
       </div>
