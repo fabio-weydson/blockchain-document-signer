@@ -63,11 +63,18 @@ contract DocumentRegistry {
         return documentCount;
     }
 
-    function getAllDocuments() external view returns (Document[] memory) {
-        Document[] memory allDocs = new Document[](documentCount);
-        for (uint i = 0; i < documentCount; i++) {
-            allDocs[i] = documents[i];
+    // Returns up to `limit` documents starting from `offset` (pagination)
+    function getDocuments(uint offset, uint limit) external view returns (Document[] memory) {
+        require(offset < documentCount || documentCount == 0, "Offset out of bounds");
+        uint end = offset + limit;
+        if (end > documentCount) {
+            end = documentCount;
         }
-        return allDocs;
+        uint resultLength = end > offset ? end - offset : 0;
+        Document[] memory docs = new Document[](resultLength);
+        for (uint i = 0; i < resultLength; i++) {
+            docs[i] = documents[offset + i];
+        }
+        return docs;
     }
 }
