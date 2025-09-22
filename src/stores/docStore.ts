@@ -8,7 +8,7 @@ interface DocState {
   setDocuments: (docs: Document[]) => void;
   getDocuments: () => Document[];
   addDocument: (doc: Document) => void;
-  removeDocument: (id: string) => void;
+  removeDocument: (hash: string) => void;
 }
 
 export const docStore = create<DocState>()((set, get) => ({

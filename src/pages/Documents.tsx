@@ -27,22 +27,27 @@ export default function Documents() {
 
   useEffect(() => {
     if (totalDocumentsError || allDocumentsError) {
-      alert("Error fetching documents from contract");
-      console.error("Error fetching documents from contract");
+      alert("Error fetching documents from contract.");
+      console.error(
+        `Error fetching documents from contract. ${totalDocumentsError || allDocumentsError}`
+      );
       return;
     }
+
     if (!totalDocuments || !allDocuments) return;
+
     const fetchDocuments = async () => {
-      const docs = await allDocuments;
+      const docs = allDocuments;
       const _docs = documents.map((doc) => {
         const match = Object.values(docs).find((d: any) => d.cid === doc.Hash);
         if (match) {
           doc.Signed = match.signed;
         }
-        return doc;
+        return {
+          ...doc,
+          Signed: match?.signed || false,
+        };
       });
-      console.log("Fetched documents from contract:", docs);
-      console.log("Updated local documents with signing info:", _docs);
       setDocuments([..._docs]);
     };
     fetchDocuments();

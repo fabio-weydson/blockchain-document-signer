@@ -6,7 +6,7 @@ const Header = () => {
     useWeb3();
 
   const handleAccountConnection = (event: any) => {
-    const index = event.target.value as number;
+    const index = Number(event.target.value);
     connectWallet(index);
   };
 
