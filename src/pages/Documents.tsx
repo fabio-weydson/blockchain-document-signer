@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { IpfsIcon } from "../assets/Icons";
 import { UploadModal } from "../components";
-import { useFiles } from "../hooks";
+import { useFiles, useDocumentRegistry } from "../hooks";
 import { docStore } from "../stores/docStore";
 
 const IpfsBaseFolder = import.meta.env.REACT_APP_IPFS_BASE_DIR || "docs";
@@ -10,6 +10,12 @@ export default function Documents() {
   const [open, setOpen] = useState(false);
   const { documents, setDocuments } = docStore();
   const { getAllFiles } = useFiles();
+  const {
+    totalDocuments,
+    allDocuments,
+    totalDocumentsError,
+    allDocumentsError,
+  } = useDocumentRegistry();
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -18,6 +24,29 @@ export default function Documents() {
     };
     fetchFiles();
   }, []);
+
+  useEffect(() => {
+    if (totalDocumentsError || allDocumentsError) {
+      alert("Error fetching documents from contract");
+      console.error("Error fetching documents from contract");
+      return;
+    }
+    if (!totalDocuments || !allDocuments) return;
+    const fetchDocuments = async () => {
+      const docs = await allDocuments;
+      const _docs = documents.map((doc) => {
+        const match = Object.values(docs).find((d: any) => d.cid === doc.Hash);
+        if (match) {
+          doc.Signed = match.signed;
+        }
+        return doc;
+      });
+      console.log("Fetched documents from contract:", docs);
+      console.log("Updated local documents with signing info:", _docs);
+      setDocuments([..._docs]);
+    };
+    fetchDocuments();
+  }, [allDocuments, setDocuments, totalDocumentsError, allDocumentsError]);
 
   const handleOpenModal = useCallback(() => {
     setOpen(true);
@@ -65,11 +94,11 @@ export default function Documents() {
                   <span className="break-words text-sm font-medium">
                     {docNameFormatted}
                   </span>
-                  {/* {doc.signedDate && doc.signedDate && (
-                  <div className="text-sm text-gray-400 mt-2">
-                    Signed on: {doc.signedDate}
-                  </div>
-              )} */}
+                  {doc.SignedDate && (
+                    <div className="text-sm text-gray-400 mt-2">
+                      Signed on: {doc.SignedDate}
+                    </div>
+                  )}
                   <div className="text-sm text-gray-500 mt-2">
                     <div className="w-5 h-5 inline-block">
                       <IpfsIcon color="#6ee7b7" />
@@ -79,9 +108,11 @@ export default function Documents() {
                       {docHashFormatted}
                     </span>
                   </div>
-                  {/* {!doc.signed && (
-                  <div className="text-sm text-gray-500 mt-2">Not signed yet</div>
-                )} */}
+                  {!doc.Signed && (
+                    <div className="text-sm text-gray-500 mt-2">
+                      Not signed yet
+                    </div>
+                  )}
                 </>
               </li>
             );
