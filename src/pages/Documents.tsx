@@ -46,21 +46,22 @@ export default function Documents() {
               <>
                 {doc.Name}
                 {/* {doc.signedDate && doc.signedDate && (
-                <>
                   <div className="text-sm text-gray-400 mt-2">
                     Signed on: {doc.signedDate}
                   </div>
-                  <div className="text-sm text-gray-500 mt-2">
-                    <div className="w-5 h-5 inline-block">
-                      <IpfsIcon color="#6ee7b7" />
-                    </div>
-                    &nbsp; IPFS: 0x1234...abcd
-                  </div>
-                </>
-              )}
-              {!doc.signed && (
-                <div className="text-sm text-gray-500 mt-2">Not signed yet</div>
               )} */}
+                <div className="text-sm text-gray-500 mt-2">
+                  <div className="w-5 h-5 inline-block">
+                    <IpfsIcon color="#6ee7b7" />
+                  </div>
+                  &nbsp; IPFS:{" "}
+                  <span className="font-mono text-green-300/80">
+                    0x1234...abcd
+                  </span>
+                </div>
+                {/* {!doc.signed && (
+                  <div className="text-sm text-gray-500 mt-2">Not signed yet</div>
+                )} */}
               </>
             </li>
           ))}
