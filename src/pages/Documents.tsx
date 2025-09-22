@@ -40,15 +40,12 @@ export default function Documents() {
       const docs = allDocuments;
       const _docs = documents.map((doc) => {
         const match = Object.values(docs).find((d: any) => d.cid === doc.Hash);
-        if (match) {
-          doc.Signed = match.signed;
-        }
         return {
           ...doc,
           Signed: match?.signed || false,
         };
       });
-      setDocuments([..._docs]);
+      setDocuments(_docs);
     };
     fetchDocuments();
   }, [allDocuments, setDocuments, totalDocumentsError, allDocumentsError]);
