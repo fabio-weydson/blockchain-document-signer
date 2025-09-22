@@ -18,7 +18,8 @@
     "react-router": "^7.9.1",
     "tailwindcss": "^4.1.13",
     "viem": "latest",
-    "wagmi": "latest"
+    "wagmi": "latest",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@types/node": "^24.5.2",

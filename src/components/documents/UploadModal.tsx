@@ -8,6 +8,7 @@ import {
 } from "@headlessui/react";
 
 import { useFileUpload } from "../../hooks";
+import { docStore } from "../../stores/docStore";
 import { DocIcon } from "../../assets/Icons";
 
 import { IPFSFileResponse } from "../../types";
@@ -24,6 +25,7 @@ export default function UploadModal({
   const [uploadedFile, setUploadedFile] = useState<IPFSFileResponse | null>(
     null
   );
+  const { addDocument } = docStore();
 
   const handleFileUpload = () => {
     const file = fileInputRef.current?.files?.[0];
@@ -42,7 +44,10 @@ export default function UploadModal({
 
     uploadFile(formData)
       .then((res) => {
-        if (res) setUploadedFile(res);
+        if (res) {
+          addDocument(res);
+          setUploadedFile(res);
+        }
       })
       .catch((err) => {
         alert("File upload failed: " + err?.message);
