@@ -1,20 +1,25 @@
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useEffect } from "react";
+import { useWeb3 } from "../hooks";
 
 const Header = () => {
-  const { connectors, connect, status, error } = useConnect();
-  const account = useAccount();
-  const { disconnect } = useDisconnect();
+  const { account, connectors, connectWallet, disconnectWallet, error } =
+    useWeb3();
 
   const handleAccountConnection = (event: any) => {
-    const index = event.target.value;
-    console.log("Connect Wallet button clicked");
-    try {
-      const connector = connectors?.[index];
-      connect({ connector });
-    } catch (error) {
-      console.error("Error connecting to wallet:", error);
-    }
+    const index = event.target.value as number;
+    connectWallet(index);
   };
+
+  const handleAccountDisconnection = () => {
+    disconnectWallet();
+  };
+
+  useEffect(() => {
+    if (error) {
+      console.error("Error connecting to wallet:", error);
+      alert(`Error connecting to wallet. Please check logs.`);
+    }
+  }, [error]);
 
   return (
     <header className="bg-gray-800 text-white p-4">
@@ -34,7 +39,7 @@ const Header = () => {
             </p>
             <span className="ml-2 inline-block w-3 h-3 bg-green-500 rounded-full"></span>
             <button
-              onClick={() => disconnect()}
+              onClick={handleAccountDisconnection}
               className="ml-4 bg-red-900 text-white px-2 py-1 rounded"
             >
               Disconnect
