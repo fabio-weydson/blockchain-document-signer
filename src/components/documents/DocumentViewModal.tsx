@@ -1,17 +1,21 @@
 import { useEffect } from "react";
-import { Signature } from "../../types";
+import { Document, Signature } from "../../types";
 import { formatHash } from "../../utils";
 //import { useDocumentRegistry } from "../../hooks";
+
+interface DocumentViewModalProps extends Document {
+  setSelectedDoc: (doc: any) => void;
+}
 
 export default function DocumentViewModal({
   Hash,
   Name,
   Size,
-  Signed,
-  CreatedAt,
-  Signatures,
+  signed,
+  createdAt,
+  signatures,
   setSelectedDoc,
-}: any) {
+}: DocumentViewModalProps) {
   //const { selectedDoc } = useDocumentRegistry();
 
   const docHashFormatted = formatHash(Hash);
@@ -50,20 +54,20 @@ export default function DocumentViewModal({
             </div>
             <div>
               <span className="font-semibold">Signed:</span>{" "}
-              <span className="text-gray-400">{Signed ? "Yes" : "No"}</span>
+              <span className="text-gray-400">{signed ? "Yes" : "No"}</span>
             </div>
-            {CreatedAt && (
+            {createdAt && (
               <div>
                 <span className="font-semibold">Created At:</span>{" "}
-                {new Date(CreatedAt).toLocaleString()}
+                {new Date(createdAt).toLocaleString()}
               </div>
             )}
           </div>
           <div className="mb-4">
             <h3 className="font-semibold mb-2">Signatures:</h3>
-            {Signatures && Signatures.length > 0 ? (
+            {signatures && signatures.length > 0 ? (
               <ul className="list-disc list-inside">
-                {Signatures.map((sig: Signature, idx: number) => {
+                {signatures.map((sig: Signature, idx: number) => {
                   const signerFormatted = formatHash(sig.signer);
                   return (
                     <li key={idx}>
