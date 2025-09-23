@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { Document, Signature } from "../../types";
 import { formatHash } from "../../utils";
-//import { useDocumentRegistry } from "../../hooks";
 
 interface DocumentViewModalProps extends Document {
   setSelectedDoc: (doc: any) => void;
@@ -16,14 +14,7 @@ export default function DocumentViewModal({
   signatures,
   setSelectedDoc,
 }: DocumentViewModalProps) {
-  //const { selectedDoc } = useDocumentRegistry();
-
   const docHashFormatted = formatHash(Hash);
-
-  useEffect(() => {
-    //if (!selectedDoc) return;
-    // Fetch document details or perform any side effects
-  }, []);
 
   return (
     <div id="document-details-modal">
