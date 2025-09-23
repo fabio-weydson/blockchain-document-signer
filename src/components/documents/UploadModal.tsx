@@ -11,7 +11,8 @@ import { useFileUpload } from "../../hooks";
 import { docStore } from "../../stores/docStore";
 import { DocIcon } from "../../assets/Icons";
 
-import { IPFSFileResponse } from "../../types";
+import { Document } from "../../types";
+import { formatHash } from "../../utils";
 
 export default function UploadModal({
   open,
@@ -22,9 +23,7 @@ export default function UploadModal({
 }) {
   const { progress, error, uploadFile } = useFileUpload();
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
-  const [uploadedFile, setUploadedFile] = useState<IPFSFileResponse | null>(
-    null
-  );
+  const [uploadedFile, setUploadedFile] = useState<Document | null>(null);
   const { addDocument } = docStore();
 
   const handleFileUpload = () => {
@@ -118,10 +117,7 @@ export default function UploadModal({
                       File uploaded successfully!
                       <br /> IPFS Hash:{" "}
                       <span className="font-mono text-green-400">
-                        {uploadedFile.Hash.substring(0, 10)}...
-                        {uploadedFile.Hash.substring(
-                          uploadedFile.Hash.length - 10
-                        )}
+                        {formatHash(uploadedFile.Hash)}
                       </span>
                     </div>
                   )}

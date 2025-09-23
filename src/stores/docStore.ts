@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import { IPFSFileResponse } from "../types";
-
-interface Document extends IPFSFileResponse {}
+import { Document } from "../types";
 
 interface DocState {
   documents: Document[];

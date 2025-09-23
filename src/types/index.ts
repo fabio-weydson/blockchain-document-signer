@@ -4,14 +4,23 @@ type IPFSFileResponse = {
   Size: string;
   Type: string;
   Path: string;
-  Owner?: string; // Future use: Ethereum address of the owner
-  Signed: boolean;
-  SignedDate?: string;
-  Signatures?: Array<{
-    signer: string;
-    signature: string;
-    date?: string;
-  }>;
 };
 
-export type { IPFSFileResponse };
+type Signature = {
+  signer: string;
+  timestamp: string;
+  signature?: string;
+};
+
+type Document = IPFSFileResponse & {
+  name?: string;
+  type?: string;
+  size?: string | number;
+  path?: string;
+  signed?: boolean;
+  signedDate?: string;
+  createdAt?: string;
+  signatures?: Array<Signature>;
+};
+
+export type { IPFSFileResponse, Document, Signature };

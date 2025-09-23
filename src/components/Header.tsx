@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { useWeb3 } from "../hooks";
+import { formatHash } from "../utils";
 
 const Header = () => {
   const { account, connectors, connectWallet, disconnectWallet, error } =
     useWeb3();
 
-  const handleAccountConnection = (event: any) => {
+  const handleAccountConnection = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const index = Number(event.target.value);
     connectWallet(index);
   };
@@ -34,8 +37,7 @@ const Header = () => {
         {account?.isConnected && (
           <div className="flex items-center justify-center">
             <p title={account.addresses?.[0]}>
-              Connected as: {account.addresses?.[0]?.substring(0, 6)}...
-              {account.addresses?.[0]?.substring(38)}
+              Connected as: {formatHash(account.addresses?.[0] || "")}
             </p>
             <span className="ml-2 inline-block w-3 h-3 bg-green-500 rounded-full"></span>
             <button
