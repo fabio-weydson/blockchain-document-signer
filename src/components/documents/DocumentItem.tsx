@@ -1,11 +1,8 @@
 import { IpfsIcon } from "../../assets/Icons";
+import { Document } from "../../types";
 
-interface DocumentItemProps extends React.HTMLAttributes<HTMLLIElement> {
+interface DocumentItemProps extends Document {
   index: number;
-  Name: string;
-  Hash: string;
-  SignedDate?: string;
-  Signed?: boolean;
   clickOpenDoc: (index: number) => void;
 }
 
@@ -13,8 +10,8 @@ export default function DocumentItem({
   index,
   Name,
   Hash,
-  SignedDate,
-  Signed,
+  signedDate,
+  signed,
   clickOpenDoc,
 }: DocumentItemProps) {
   const docNameFormatted =
@@ -34,9 +31,9 @@ export default function DocumentItem({
         <span className="break-words text-sm font-medium">
           {docNameFormatted}
         </span>
-        {SignedDate && (
+        {signedDate && (
           <div className="text-sm text-gray-400 mt-2">
-            Signed on: {SignedDate}
+            Signed on: {signedDate}
           </div>
         )}
         <div className="text-sm text-gray-500 mt-2">
@@ -48,7 +45,7 @@ export default function DocumentItem({
             {docHashFormatted}
           </span>
         </div>
-        {!Signed && (
+        {!signed && (
           <div className="text-sm text-gray-500 mt-2">Not signed yet</div>
         )}
       </>
