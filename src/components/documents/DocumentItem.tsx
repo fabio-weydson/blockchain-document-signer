@@ -1,5 +1,6 @@
 import { IpfsIcon } from "../../assets/Icons";
 import { Document } from "../../types";
+import { formatHash } from "../../utils";
 
 interface DocumentItemProps extends Document {
   index: number;
@@ -17,10 +18,7 @@ export default function DocumentItem({
   const docNameFormatted =
     Name.length > 30 ? Name.substring(0, 30) + "..." : Name;
 
-  const docHashFormatted =
-    Hash.length > 20
-      ? Hash.substring(0, 6) + "..." + Hash.substring(Hash.length - 6)
-      : Hash;
+  const docHashFormatted = formatHash(Hash);
 
   return (
     <li

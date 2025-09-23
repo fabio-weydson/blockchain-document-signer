@@ -89,7 +89,7 @@ export default function Documents() {
             <DocumentItem
               clickOpenDoc={() => handleOpenDocument(index)}
               index={index}
-              key={index}
+              key={Math.random()}
               {...doc}
             />
           ))

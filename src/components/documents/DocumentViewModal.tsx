@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { Signature } from "../../types";
+import { formatHash } from "../../utils";
 //import { useDocumentRegistry } from "../../hooks";
 
 export default function DocumentViewModal({
@@ -12,10 +14,7 @@ export default function DocumentViewModal({
 }: any) {
   //const { selectedDoc } = useDocumentRegistry();
 
-  const docHashFormatted =
-    Hash.length > 20
-      ? Hash.substring(0, 6) + "..." + Hash.substring(Hash.length - 6)
-      : Hash;
+  const docHashFormatted = formatHash(Hash);
 
   useEffect(() => {
     //if (!selectedDoc) return;
@@ -64,13 +63,16 @@ export default function DocumentViewModal({
             <h3 className="font-semibold mb-2">Signatures:</h3>
             {Signatures && Signatures.length > 0 ? (
               <ul className="list-disc list-inside">
-                {Signatures.map((sig: any, idx: number) => (
-                  <li key={idx}>
-                    {sig.signer}{" "}
-                    {sig.timestamp &&
-                      `- ${new Date(sig.timestamp).toLocaleString()}`}
-                  </li>
-                ))}
+                {Signatures.map((sig: Signature, idx: number) => {
+                  const signerFormatted = formatHash(sig.signer);
+                  return (
+                    <li key={idx}>
+                      {signerFormatted}{" "}
+                      {sig.timestamp &&
+                        `- ${new Date(sig.timestamp).toLocaleString()}`}
+                    </li>
+                  );
+                })}
               </ul>
             ) : (
               <div className="text-gray-500">No signatures yet.</div>

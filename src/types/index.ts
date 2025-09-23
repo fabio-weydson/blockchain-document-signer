@@ -6,6 +6,12 @@ type IPFSFileResponse = {
   Path: string;
 };
 
+type Signature = {
+  signer: string;
+  timestamp: string;
+  signature?: string;
+};
+
 type Document = IPFSFileResponse & {
   name?: string;
   type?: string;
@@ -14,10 +20,7 @@ type Document = IPFSFileResponse & {
   signed?: boolean;
   signedDate?: string;
   createdAt?: string;
-  signatures?: Array<{
-    signer: string;
-    timestamp: string;
-  }>;
+  signatures?: Array<Signature>;
 };
 
-export type { IPFSFileResponse, Document };
+export type { IPFSFileResponse, Document, Signature };
