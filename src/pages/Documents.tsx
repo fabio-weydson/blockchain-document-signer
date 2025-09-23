@@ -1,13 +1,14 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { IpfsIcon } from "../assets/Icons";
-import { UploadModal } from "../components";
+import { DocumentItem, UploadModal } from "../components";
 import { useFiles, useDocumentRegistry } from "../hooks";
 import { docStore } from "../stores/docStore";
+import DocumentViewModal from "../components/documents/DocumentViewModal";
 
 const IpfsBaseFolder = import.meta.env.REACT_APP_IPFS_BASE_DIR || "docs";
 
 export default function Documents() {
   const [open, setOpen] = useState(false);
+  const [selectedDoc, setSelectedDoc] = useState<any>(null);
   const { documents, setDocuments } = docStore();
   const { getAllFiles } = useFiles();
   const {
@@ -54,6 +55,14 @@ export default function Documents() {
     setOpen(true);
   }, []);
 
+  const handleOpenDocument = useCallback(
+    (index: number) => {
+      const doc = documents[index];
+      setSelectedDoc(doc);
+    },
+    [documents]
+  );
+
   const archivedDocs: any[] = [];
 
   const documentCount = useMemo(() => documents.length, [documents]);
@@ -76,49 +85,14 @@ export default function Documents() {
       </div>
       <ul id="document-cards-list" className="mt-4 grid lg:grid-cols-4 gap-4">
         {documents && documents.length > 0 ? (
-          documents.map((doc) => {
-            const docNameFormatted =
-              doc.Name.length > 30
-                ? doc.Name.substring(0, 30) + "..."
-                : doc.Name;
-            const docHashFormatted =
-              doc.Hash.length > 20
-                ? doc.Hash.substring(0, 6) +
-                  "..." +
-                  doc.Hash.substring(doc.Hash.length - 6)
-                : doc.Hash;
-            return (
-              <li
-                key={doc.Hash}
-                className="card hover:bg-gray-800 p-4 cursor-pointer"
-              >
-                <>
-                  <span className="break-words text-sm font-medium">
-                    {docNameFormatted}
-                  </span>
-                  {doc.SignedDate && (
-                    <div className="text-sm text-gray-400 mt-2">
-                      Signed on: {doc.SignedDate}
-                    </div>
-                  )}
-                  <div className="text-sm text-gray-500 mt-2">
-                    <div className="w-5 h-5 inline-block">
-                      <IpfsIcon color="#6ee7b7" />
-                    </div>
-                    &nbsp; IPFS:{" "}
-                    <span className="font-mono text-green-300/80">
-                      {docHashFormatted}
-                    </span>
-                  </div>
-                  {!doc.Signed && (
-                    <div className="text-sm text-gray-500 mt-2">
-                      Not signed yet
-                    </div>
-                  )}
-                </>
-              </li>
-            );
-          })
+          documents.map((doc, index) => (
+            <DocumentItem
+              clickOpenDoc={() => handleOpenDocument(index)}
+              index={index}
+              key={index}
+              {...doc}
+            />
+          ))
         ) : (
           <li
             id="bin"
@@ -131,6 +105,9 @@ export default function Documents() {
         )}
       </ul>
       <UploadModal open={open} setOpen={setOpen} />
+      {selectedDoc && (
+        <DocumentViewModal {...selectedDoc} setSelectedDoc={setSelectedDoc} />
+      )}
     </>
   );
 }
