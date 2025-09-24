@@ -1,13 +1,46 @@
 import { useState } from "react";
+import useAxios from "./useAxios";
+
 import { AxiosProgressEvent } from "axios";
 import { IPFSFileResponse } from "../types";
-
-import useAxios from "./useAxios";
 
 const IpfsApiUrl = import.meta.env.VITE_IPFS_API_URL;
 const IpfsBaseFolder = import.meta.env.VITE_IPFS_BASE_DIR || "docs";
 
-export default function useFileUpload() {
+function useFiles() {
+  const { client } = useAxios();
+
+  const getAllFiles = async (
+    dir?: string
+  ): Promise<IPFSFileResponse[] | null> => {
+    try {
+      const response = await client.post(
+        `files/ls?${dir ? `arg=/${dir}` : "arg=/"}&long=true&U=true`
+      );
+      return response.data.Entries || [];
+    } catch (error) {
+      console.error("Error fetching IPFS file:", error);
+      return null;
+    }
+  };
+
+  const getFile = async (path: string): Promise<Blob | null> => {
+    try {
+      const response = await client.get(`files/${path}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching IPFS file:", error);
+      return null;
+    }
+  };
+
+  return {
+    getAllFiles,
+    getFile,
+  };
+}
+
+function useFileUpload() {
   const [progress, setProgress] = useState<number>(0);
   const [error, setError] = useState<{ message: string } | null>(null);
   const { client } = useAxios();
@@ -61,3 +94,4 @@ export default function useFileUpload() {
 
   return { progress, error, uploadFile };
 }
+export { useFiles, useFileUpload };
