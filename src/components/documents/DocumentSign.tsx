@@ -155,8 +155,9 @@ export default function Sign() {
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     const rect = canvas?.getBoundingClientRect();
-    const x = e.clientX - rect?.left;
-    const y = e.clientY - rect?.top;
+    if (!rect) return;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     if (positions.length <= 1) {
       setPositions((prev) => [...prev, { x, y }]);
     } else {
@@ -164,7 +165,7 @@ export default function Sign() {
     }
   };
 
-  const signDocument = () => async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const signDocument = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (positions.length < 2) {
       alert(
