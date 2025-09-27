@@ -44,8 +44,8 @@ export default function Sign() {
   };
 
   useEffect(() => {
-    const img: any = imgRef.current;
-    const canvas: any = canvasRef.current;
+    const img = imgRef.current;
+    const canvas = canvasRef.current;
     if (!img || !canvas) return;
 
     const dpr = window.devicePixelRatio || 1;
@@ -158,7 +158,7 @@ export default function Sign() {
     const x = e.clientX - rect?.left;
     const y = e.clientY - rect?.top;
     if (positions.length <= 1) {
-      setPositions((prev: any) => [...prev, { x, y }]);
+      setPositions((prev) => [...prev, { x, y }]);
     } else {
       setPositions([{ x, y }]);
     }
@@ -242,7 +242,7 @@ export default function Sign() {
           <div className="flex flex-col sm:flex-row gap-2 w-full font-bold">
             <button
               className="flex-1 px-4 py-2 rounded btn-primary  transition"
-              onClick={signDocument()}
+              onClick={signDocument}
             >
               Sign
             </button>
