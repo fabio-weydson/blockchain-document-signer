@@ -1,5 +1,6 @@
 import { Document, Signature } from "../../types";
-import { formatHash } from "../../utils";
+import { docNameSlugify, formatHash } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 interface DocumentViewModalProps extends Document {
   setSelectedDoc: (doc: any) => void;
@@ -15,10 +16,12 @@ export default function DocumentViewModal({
   setSelectedDoc,
 }: DocumentViewModalProps) {
   const docHashFormatted = formatHash(Hash);
+  const docSlug = docNameSlugify(Hash, Name);
+  const navigate = useNavigate();
 
   return (
     <div id="document-details-modal">
-      <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-black/50 bg-opacity-40 flex items-center justify-center z-50">
         <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 w-full max-w-lg relative">
           <button
             className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 cursor-pointer"
@@ -85,13 +88,21 @@ export default function DocumentViewModal({
             </a>
             <button
               className="btn-secondary px-4 py-2 rounded"
-              onClick={() => alert("")}
+              onClick={() =>
+                navigate(`/sign/${docSlug}`, {
+                  state: { doc: { Hash } },
+                })
+              }
             >
               Sign Document
             </button>
             <button
               className="btn-alt px-4 py-2 rounded"
-              onClick={() => alert("")}
+              onClick={() =>
+                navigate(`/documents/${docSlug}/request`, {
+                  state: { doc: { Hash, Name } },
+                })
+              }
             >
               Request Signature
             </button>

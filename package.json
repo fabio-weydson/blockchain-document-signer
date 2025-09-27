@@ -16,6 +16,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^7.9.1",
+    "react-router-dom": "^7.9.1",
     "tailwindcss": "^4.1.13",
     "viem": "latest",
     "wagmi": "latest",

@@ -1,5 +1,6 @@
 import { useReadContract } from "wagmi";
 import { documentRegistryConfig } from "../contracts/documentRegistry.config";
+
 export default function useDocumentRegistry() {
   const {
     data: totalDocuments,
@@ -21,7 +22,16 @@ export default function useDocumentRegistry() {
     args: [],
   });
 
+  const documentById = (id: string) => {
+    return useReadContract({
+      ...documentRegistryConfig,
+      functionName: "getDocument",
+      args: [id],
+    });
+  };
+
   return {
+    documentById,
     totalDocuments,
     allDocuments,
     totalDocumentsError,

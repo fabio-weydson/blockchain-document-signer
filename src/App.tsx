@@ -7,8 +7,8 @@ function App() {
     <div id="container" className="p-4">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/documents/sign" element={<Sign />} />
-        <Route path="/documents/verify" element={<div>Verify</div>} />
+        <Route path="/sign/:slug" element={<Sign />} />
+        <Route path="/verify" element={<div>Verify</div>} />
       </Routes>
     </div>
   );

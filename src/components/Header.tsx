@@ -68,12 +68,7 @@ const Header = () => {
           <ul className="flex space-x-4">
             <li className="font-bold *:underline">
               <a href="/" className="hover:underline">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="/documents/sign" className="hover:underline">
-                Sign Document
+                Documents
               </a>
             </li>
             <li>
