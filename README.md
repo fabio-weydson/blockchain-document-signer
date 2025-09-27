@@ -6,6 +6,8 @@ Estou desenvolvendo este projeto como um exercício de aprendizado para entender
 
 **Aviso:** Este projeto está sendo desenvolvido apenas para fins de aprendizado sobre integração de blockchain com aplicações web usando Wagmi e IPFS. Não é destinado para uso em produção.
 
+<img src="./preview.png" width="500">
+
 🚀 **Tecnologias**
 
 - React (Vite + TailwindCSS)

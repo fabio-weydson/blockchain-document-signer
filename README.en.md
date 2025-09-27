@@ -6,6 +6,8 @@ I'm building this project as a learning exercise to understand how to integrate 
 
 **Disclaimer:** I'm building this project as a learning exercise to understand how to integrate blockchain technology with web applications using Wagmi. It is not intended for production use.
 
+<img src="./preview.png" width="500">
+
 🚀 **Technologies**
 
 - React (Vite + TailwindCSS)
