@@ -26,7 +26,7 @@ const loadImage = (url: string) => {
 export default function Sign() {
   const [page, setPage] = useState(1);
   const [doc, setDoc] = useState(sampleDocument);
-  const canvasRef = useRef<HTMLCanvasElement>({} as HTMLCanvasElement);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const [positions, setPositions] = useState<{ x: number; y: number }[]>([]);
 
