@@ -8,7 +8,7 @@
     --color-elevated: #131820;
 
     /* Accents */
-    --color-accent: #53cc9cff; /* mint */
+    --color-accent: #54bb92ff; /* mint */
     --color-accent-alt: #7c5cff; /* violet */
     --color-accent-secondary: #4da3ff;
 
@@ -37,7 +37,7 @@
   }
 
   .btn-primary {
-    @apply bg-[color:var(--color-accent)] text-black hover:opacity-90;
+    @apply bg-[color:var(--color-accent)] text-white hover:opacity-90;
   }
 
   .btn-alt {

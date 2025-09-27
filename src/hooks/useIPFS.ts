@@ -51,6 +51,18 @@ function useFileUpload() {
     setProgress(0);
     setError(null);
 
+    try {
+      const allowedTypes = ["image", "json", "file"];
+      const type = formData.get("fileType")?.toString().split("/")[0] || "file";
+      if (!allowedTypes.includes(type)) {
+        setError({ message: "Unsupported file type." });
+        return undefined;
+      }
+    } catch (err: any) {
+      setError({ message: err?.message || "Error processing file." });
+      return undefined;
+    }
+
     const fileName = formData.get("fileName") as string;
     const fileType = formData.get("fileType") as string;
     const ipfsPath = `/${IpfsBaseFolder}/${fileName}`;
